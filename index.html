@@ -1,0 +1,271 @@
+:root {
+    --color-black: #000000;
+    --color-dark-blue: #000814;
+    --color-accent: #00a8ff;
+    --color-accent-light: #33bcff;
+    --color-white: #ffffff;
+    --color-grey-100: #f8f9fa;
+    --color-grey-400: #ced4da;
+    --color-grey-700: #495057;
+    --color-grey-900: #212529;
+    --font-main: 'Inter', sans-serif;
+    --gap-base: 1rem;
+    --section-padding: 5rem 2rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-main);
+    line-height: 1.6;
+    color: var(--color-grey-900);
+    background-color: var(--color-white);
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DESKTOP HERO
+═══════════════════════════════════════════════════════════ */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: var(--color-black);
+    color: var(--color-white);
+    overflow: hidden;
+}
+
+.hero-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.bw-portrait-fixed {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    object-position: left center;
+}
+
+.hero-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 8vw;
+    width: 100%;
+}
+
+.hero-content {
+    max-width: 500px;
+    text-align: left;
+    padding: 2rem;
+}
+
+.hero-content h1 {
+    font-size: clamp(4rem, 8vw, 10rem);
+    font-weight: 900;
+    margin-bottom: 1rem;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    color: var(--color-white);
+    text-transform: uppercase;
+}
+
+.hero-content h2 {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-weight: 700;
+    color: var(--color-white);
+    margin-bottom: 2rem;
+    display: block;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-accent-light);
+    transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BIO SECTION
+═══════════════════════════════════════════════════════════ */
+.bio {
+    padding: var(--section-padding);
+    background-color: var(--color-white);
+}
+
+.bio-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE  ≤ 1024px
+
+   Visual layout:
+   ┌─────────────────────────┬───────┬───────┐
+   │                         │       │       │
+   │   face photo (dimmed)   │  H2 ↑ │  H1 ↑ │
+   │                         │       │       │
+   ├─────────────────────────┤       │       │
+   │    [  Contact me  ]     │       │       │
+   └─────────────────────────┴───────┴───────┘
+
+   The hero-header-group is a flex-row container, positioned on the right.
+   CRITICAL: The container needs a FIXED width equal to the sum of the
+   two text column widths, so flex knows exactly how wide to be and
+   doesn't overflow or push children off-screen.
+
+   For writing-mode: vertical-rl text:
+   - font-size = 3rem → line-height in horizontal = font-size × line-height
+   - Each heading becomes ONE line of text of width = font-size × line-height
+   - H1 at 2.5rem → column width ≈ 2.5rem (this is line-height in block axis)
+   - H2 at 0.9rem → column width ≈ 0.9rem
+   - gap: 1rem
+   - Total width ≈ 2.5 + 0.9 + 1 + 2×0.5 padding = ~5.4rem
+
+   We set width: 5rem + a bit for safety.
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+
+    .hero {
+        height: 100vh;
+        min-height: 100vh;
+        background: black;
+        overflow: hidden;
+    }
+
+    .hero-image {
+        width: 100%;
+        height: 100vh;
+        opacity: 0.25;
+    }
+
+    .hero-container {
+        position: absolute;
+        inset: 0;
+        height: 100vh;
+        /* Explicit height so children can use height: 100% */
+        padding: 0;
+        max-width: 100%;
+        display: block;
+        z-index: 2;
+    }
+
+    .hero-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    /*
+     * The group:
+     * - absolutely positioned to the RIGHT side
+     * - exact width so it doesn't collapse or overflow
+     * - flex row: H1 first (right column), H2 second (left column)
+     *   NOTE: flex-direction: row means H1 is FIRST in DOM order → leftmost
+     *         but we want H1 on the RIGHT → we reverse: row-reverse,
+     *         so DOM order H1, H2 becomes RIGHT H1, LEFT H2 visually.
+     */
+    .hero-header-group {
+        position: absolute;
+        top: 5vh;
+        right: 0.5rem;
+        bottom: 18vh;
+        width: 7rem;
+        /* Wide enough for H1 (2.5rem) + H2 (0.9rem) + gap + padding */
+        display: flex;
+        flex-direction: row-reverse;
+        /* H1 rightmost, H2 second from right */
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        padding: 0 0.25rem;
+        overflow: visible;
+    }
+
+    .hero-header-group h1,
+    .hero-header-group h2 {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        transform: rotate(180deg);
+        /* Flip: top→bottom becomes bottom→top */
+        margin: 0;
+        white-space: nowrap;
+        color: var(--color-white);
+        flex-shrink: 0;
+    }
+
+    .hero-header-group h1 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        line-height: 1;
+    }
+
+    .hero-header-group h2 {
+        font-size: 0.85rem;
+        font-weight: 700;
+        opacity: 0.85;
+        line-height: 1;
+    }
+
+    .hero-header-group br {
+        display: none;
+    }
+
+    /* Button stays fully horizontal */
+    #hero-cta-mobile {
+        position: absolute;
+        bottom: 5vh;
+        right: 1rem;
+        left: auto;
+        writing-mode: horizontal-tb !important;
+        transform: none !important;
+        white-space: nowrap;
+        padding: 0.9rem 2rem;
+        font-size: 0.95rem;
+        display: inline-block;
+        z-index: 10;
+    }
+}
